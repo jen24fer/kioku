@@ -9,7 +9,7 @@ import ARKit
 import SceneKit
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController{
     
     // MARK: IBOutlets
     
@@ -20,8 +20,49 @@ class ViewController: UIViewController {
     @IBOutlet weak var blurView: UIVisualEffectView!
     
     @IBOutlet weak var spinner: UIActivityIndicatorView!
-
-    // MARK: - UI Elements
+    
+    @IBOutlet weak var saveExperience: UIBarButtonItem!
+    
+    var mapData = [Data]()
+    
+    @IBAction func savePressed(_ sender: UIBarButtonItem) {
+        print("button was pressed")
+        
+        if #available(iOS 12.0, *) {
+            sceneView.session.getCurrentWorldMap { worldMap, error in
+                guard let map = worldMap
+                    else {
+                        let alert = UIAlertController(title: ":(", message: "Can't get current world map: " + error!.localizedDescription, preferredStyle: UIAlertController.Style.alert)
+                        
+                        // add an action (button)
+                        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+                        
+                        // show the alert
+                        self.present(alert, animated: true, completion: nil)
+                        return
+                }
+                // Add a snapshot image indicating where the map was captured.
+                //                guard let snapshotAnchor = SnapshotAnchor(capturing: self.sceneView)
+                //                    else { fatalError("Can't take snapshot") }
+                //                map.anchors.append(snapshotAnchor)
+                
+                do {
+                    let data = try NSKeyedArchiver.archivedData(withRootObject: map, requiringSecureCoding: true)
+                    try data.write(to: self.mapSaveURL, options: [.atomic])
+                    DispatchQueue.main.async {
+                        //self.loadExperienceButton.isHidden = false
+                        //self.loadExperienceButton.isEnabled = true
+                    }
+                    print("saved!")
+                } catch {
+                    fatalError("Can't save map: \(error.localizedDescription)")
+                }
+            }
+        } else {
+            // Fallback on earlier versions
+        }
+    }
+    
     
     var focusSquare = FocusSquare()
     
@@ -61,7 +102,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         sceneView.delegate = self
         sceneView.session.delegate = self
 
@@ -175,5 +216,81 @@ class ViewController: UIViewController {
         alertController.addAction(restartAction)
         present(alertController, animated: true, completion: nil)
     }
+    
+    // MARK: - ARSessionObserver
+    
+//    func sessionWasInterrupted(_ session: ARSession) {
+//        // Inform the user that the session has been interrupted, for example, by presenting an overlay.
+//        sessionInfoLabel.text = "Session was interrupted"
+//    }
+//
+//    func sessionInterruptionEnded(_ session: ARSession) {
+//        // Reset tracking and/or remove existing anchors if consistent tracking is required.
+//        sessionInfoLabel.text = "Session interruption ended"
+//    }
+//
+//    func session(_ session: ARSession, didFailWithError error: Error) {
+//        // Present an error message to the user.
+//        sessionInfoLabel.text = "Session failed: \(error.localizedDescription)"
+//        resetTracking(nil)
+//    }
+//
+//    func sessionShouldAttemptRelocalization(_ session: ARSession) -> Bool {
+//        return true
+//    }
+//
+    
+    lazy var mapSaveURL: URL = {
+        do {
+            return try FileManager.default
+                .url(for: .documentDirectory,
+                     in: .userDomainMask,
+                     appropriateFor: nil,
+                     create: true)
+                .appendingPathComponent("map.arexperience")
+        } catch {
+            fatalError("Can't get file save URL: \(error.localizedDescription)")
+        }
+    }()
+    
+    @IBAction func saveExperiencePressed(_ sender: UIBarButtonItem) {
+        print("button was pressed")
+        
+        if #available(iOS 12.0, *) {
+            sceneView.session.getCurrentWorldMap { worldMap, error in
+                guard let map = worldMap
+                    else {
+                        let alert = UIAlertController(title: ":(", message: "Can't get current world map: " + error!.localizedDescription, preferredStyle: UIAlertController.Style.alert)
+                        
+                        // add an action (button)
+                        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+                        
+                        // show the alert
+                        self.present(alert, animated: true, completion: nil)
+                        return
+                }
+                // Add a snapshot image indicating where the map was captured.
+                //                guard let snapshotAnchor = SnapshotAnchor(capturing: self.sceneView)
+                //                    else { fatalError("Can't take snapshot") }
+                //                map.anchors.append(snapshotAnchor)
+                
+                do {
+                    let data = try NSKeyedArchiver.archivedData(withRootObject: map, requiringSecureCoding: true)
+                    try data.write(to: self.mapSaveURL, options: [.atomic])
+                    DispatchQueue.main.async {
+                        //self.loadExperienceButton.isHidden = false
+                        //self.loadExperienceButton.isEnabled = true
+                    }
+                    print("saved!")
+                } catch {
+                    fatalError("Can't save map: \(error.localizedDescription)")
+                }
+            }
+        } else {
+            // Fallback on earlier versions
+        }
+    }
+    
 
+    
 }

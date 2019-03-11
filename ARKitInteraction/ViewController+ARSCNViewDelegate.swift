@@ -62,10 +62,30 @@ extension ViewController: ARSCNViewDelegate, ARSessionDelegate {
                 if let objectAtAnchor = self.virtualObjectLoader.loadedObjects.first(where: { $0.anchor == anchor }) {
                     objectAtAnchor.simdPosition = anchor.transform.translation
                     objectAtAnchor.anchor = anchor
+                    
+                            if #available(iOS 12.0, *) {
+                                switch self.session.currentFrame!.worldMappingStatus {
+                                case .extending, .mapped:
+                                    self.saveExperience.isEnabled =
+                                        objectAtAnchor.anchor != nil //&& //self.session.currentFrame!.anchors.contains(objectAtAnchor.anchor!)
+                                default:
+                                    self.saveExperience.isEnabled = false
+                    
+                                }
+                            } else {
+                                // Fallback on earlier versions
+                                print("Update your ios")
+                                self.saveExperience.isEnabled = false
+                            }
                 }
             }
+            
+
         }
     }
+    
+    
+    
     
     func session(_ session: ARSession, cameraDidChangeTrackingState camera: ARCamera) {
         statusViewController.showTrackingQualityInfo(for: camera.trackingState, autoHide: true)
@@ -98,6 +118,28 @@ extension ViewController: ARSCNViewDelegate, ARSessionDelegate {
         }
     }
     
+//    func session(_ session: ARSession, didUpdate frame: ARFrame) {
+//        // Enable Save button only when the mapping status is good and an object has been placed
+//        if #available(iOS 12.0, *) {
+//            switch frame.worldMappingStatus {
+//            case .extending, .mapped:
+//                saveExperience.isEnabled =
+//                    self.virtualObjectLoader.loadedObjects.first!.anchor != nil //&& frame.anchors.contains(self.virtualObjectLoader.loadedObjects.first?.anchor! ?? <#default value#>)
+//            default:
+//                saveExperience.isEnabled = false
+//
+////                statusLabel.text = """
+////                Mapping: \(frame.worldMappingStatus.description)
+////                Tracking: \(frame.camera.trackingState.description)
+////                """
+////                updateSessionInfoLabel(for: frame, trackingState: frame.camera.trackingState)
+//            }
+//        } else {
+//            // Fallback on earlier versions
+//        }
+//
+//    }
+    
     func sessionWasInterrupted(_ session: ARSession) {
         // Hide content before going into the background.
         virtualObjectLoader.loadedObjects.forEach { $0.isHidden = true }
@@ -112,4 +154,8 @@ extension ViewController: ARSCNViewDelegate, ARSessionDelegate {
          */
         return true
     }
+    
+
+    
+    
 }
