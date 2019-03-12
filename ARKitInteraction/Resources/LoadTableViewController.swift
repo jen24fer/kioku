@@ -7,9 +7,30 @@
 //
 
 import UIKit
+import AudioToolbox
+import ARKit
+import SceneKit
 
 class LoadTableViewController: UITableViewController {
 
+
+    @IBAction func loadClicked(_ sender: UIButton) {
+        AudioServicesPlaySystemSound(1519)
+        /// - Tag: ReadWorldMap
+
+        // Display the snapshot image stored in the world map to aid user in relocalizing.
+//        if let snapshotData = worldMap.snapshotAnchor?.imageData,
+//            let snapshot = UIImage(data: snapshotData) {
+//            self.snapshotThumbnail.image = snapshot
+//        } else {
+//            print("No snapshot image in world map")
+//        }
+        // Remove the snapshot anchor from the world map since we do not need it in the scene.
+//        worldMap.anchors.removeAll(where: { $0 is SnapshotAnchor })
+//
+
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 

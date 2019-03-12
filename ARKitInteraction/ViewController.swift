@@ -8,8 +8,9 @@ Main view controller for the AR experience.
 import ARKit
 import SceneKit
 import UIKit
+import AudioToolbox
 
-class ViewController: UIViewController{
+class ViewController: UIViewController {
     
     // MARK: IBOutlets
     
@@ -23,46 +24,11 @@ class ViewController: UIViewController{
     
     @IBOutlet weak var saveExperience: UIBarButtonItem!
     
-    var mapData = [Data]()
+    var palaces = [MemoryPalace]()
     
-    @IBAction func savePressed(_ sender: UIBarButtonItem) {
-        print("button was pressed")
-        
-        if #available(iOS 12.0, *) {
-            sceneView.session.getCurrentWorldMap { worldMap, error in
-                guard let map = worldMap
-                    else {
-                        let alert = UIAlertController(title: ":(", message: "Can't get current world map: " + error!.localizedDescription, preferredStyle: UIAlertController.Style.alert)
-                        
-                        // add an action (button)
-                        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
-                        
-                        // show the alert
-                        self.present(alert, animated: true, completion: nil)
-                        return
-                }
-                // Add a snapshot image indicating where the map was captured.
-                //                guard let snapshotAnchor = SnapshotAnchor(capturing: self.sceneView)
-                //                    else { fatalError("Can't take snapshot") }
-                //                map.anchors.append(snapshotAnchor)
-                
-                do {
-                    let data = try NSKeyedArchiver.archivedData(withRootObject: map, requiringSecureCoding: true)
-                    try data.write(to: self.mapSaveURL, options: [.atomic])
-                    DispatchQueue.main.async {
-                        //self.loadExperienceButton.isHidden = false
-                        //self.loadExperienceButton.isEnabled = true
-                    }
-                    print("saved!")
-                } catch {
-                    fatalError("Can't save map: \(error.localizedDescription)")
-                }
-            }
-        } else {
-            // Fallback on earlier versions
-        }
-    }
+    let selection = UISelectionFeedbackGenerator()
     
+
     
     var focusSquare = FocusSquare()
     
@@ -102,7 +68,9 @@ class ViewController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        if mapDataFromFile != nil {
+           print("hahahaaaaaa nope")
+        }
         sceneView.delegate = self
         sceneView.session.delegate = self
 
@@ -240,18 +208,7 @@ class ViewController: UIViewController{
 //    }
 //
     
-    lazy var mapSaveURL: URL = {
-        do {
-            return try FileManager.default
-                .url(for: .documentDirectory,
-                     in: .userDomainMask,
-                     appropriateFor: nil,
-                     create: true)
-                .appendingPathComponent("map.arexperience")
-        } catch {
-            fatalError("Can't get file save URL: \(error.localizedDescription)")
-        }
-    }()
+
     
     @IBAction func saveExperiencePressed(_ sender: UIBarButtonItem) {
         print("button was pressed")
@@ -291,6 +248,101 @@ class ViewController: UIViewController{
         }
     }
     
-
+    lazy var mapSaveURL: URL = {
+        do {
+            return try FileManager.default
+                .url(for: .documentDirectory,
+                     in: .userDomainMask,
+                     appropriateFor: nil,
+                     create: true)
+                .appendingPathComponent("map.arexperience")
+        } catch {
+            fatalError("Can't get file save URL: \(error.localizedDescription)")
+        }
+    }()
+    
+    var mapData = [Data]()
+    
+    static var isRelocalizingMap = false
+    
+    static var defaultConfiguration: ARWorldTrackingConfiguration {
+        let configuration = ARWorldTrackingConfiguration()
+        configuration.planeDetection = .horizontal
+        if #available(iOS 12.0, *) {
+            configuration.environmentTexturing = .automatic
+        } else {
+            // Fallback on earlier versions
+        }
+        return configuration
+    }
+    
+    var mapDataFromFile: Data? {
+        return try? Data(contentsOf: mapSaveURL)
+    }
+    
+    @IBAction func loadExperience(_ button: UIButton) {
+        
+        /// - Tag: ReadWorldMap
+        if #available(iOS 12.0, *) {
+            let worldMap: ARWorldMap = {
+                guard let data = mapDataFromFile
+                    else { fatalError("Map data should already be verified to exist before Load button is enabled.") }
+                do {
+                    guard let worldMap = try NSKeyedUnarchiver.unarchivedObject(ofClass: ARWorldMap.self, from: data)
+                        else { fatalError("No ARWorldMap in archive.") }
+                    return worldMap
+                } catch {
+                    fatalError("Can't unarchive ARWorldMap from file data: \(error)")
+                }
+            }()
+            
+            let configuration = ViewController.defaultConfiguration // this app's standard world tracking settings
+            configuration.initialWorldMap = worldMap
+            sceneView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
+            
+            ViewController.isRelocalizingMap = true
+        } else {
+            // Fallback on earlier versions
+        }
+        
+        // Display the snapshot image stored in the world
+     
+        //virtualObjectAnchor = nil
+    }
+    
+    @IBAction func loadExp(_ sender: UIButton) {
+        /// - Tag: ReadWorldMap
+        if #available(iOS 12.0, *) {
+            let worldMap: ARWorldMap = {
+                guard let data = mapDataFromFile
+                    else { fatalError("Map data should already be verified to exist before Load button is enabled.") }
+                do {
+                    guard let worldMap = try NSKeyedUnarchiver.unarchivedObject(ofClass: ARWorldMap.self, from: data)
+                        else { fatalError("No ARWorldMap in archive.") }
+                    return worldMap
+                } catch {
+                    fatalError("Can't unarchive ARWorldMap from file data: \(error)")
+                }
+            }()
+            
+            let configuration = ViewController.defaultConfiguration // this app's standard world tracking settings
+            configuration.initialWorldMap = worldMap
+            sceneView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
+            
+            ViewController.isRelocalizingMap = true
+        } else {
+            // Fallback on earlier versions
+        }
+    }
+    
+    
+    @IBAction func donePressed(_ sender: UIBarButtonItem) {
+        var memoryPalace = MemoryPalace(name: "Lol", photo: nil, data: mapDataFromFile!)
+        if (memoryPalace != nil)
+        {
+            palaces.append(memoryPalace)
+        }
+    }
+    
     
 }
