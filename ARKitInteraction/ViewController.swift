@@ -153,21 +153,20 @@ class ViewController: UIViewController {
             statusViewController.scheduleMessage("TRY MOVING LEFT OR RIGHT", inSeconds: 5.0, messageType: .focusSquare)
         }
         if let currentPosition = session.currentFrame?.camera.transform {
-                                // print(position[3][0])
+            // print(position[3][0])
             if objectQueue.count > 0 {
                 let objectPosition = objectQueue[0].transform
-                let deltaZ = objectPosition.m43 - currentPosition[3][2]
-                let deltaX = objectPosition.m41 - currentPosition[3][0]
-                                            let deltaTheta = atan2(deltaZ, deltaX)
-                                            var rotationAngle: Float = 0.0
-                                            if let currentPosition = session.currentFrame?.camera.eulerAngles {
-                                                        print(deltaTheta - currentPosition[1] + 1.5708)
-                                                        rotationAngle = (deltaTheta - currentPosition[1] + 1.5708)
-                                                }
-                                            
-                                            OrientationArrow.transform = CGAffineTransform.init(rotationAngle: CGFloat(-1.0 * rotationAngle))
-                                    }
-                        }
+                let deltaZ = objectPosition.m43 - currentPosition[3][2]
+                let deltaX = objectPosition.m41 - currentPosition[3][0]
+                let deltaTheta = atan2(deltaZ, deltaX)
+                var rotationAngle: Float = 0.0
+                if let currentPosition = session.currentFrame?.camera.eulerAngles {
+                    //print(deltaTheta - currentPosition[1] + 1.5708)
+                    rotationAngle = (deltaTheta - currentPosition[1] + 1.5708)
+                }
+                OrientationArrow.transform = CGAffineTransform.init(rotationAngle: CGFloat(-1.0 * rotationAngle))
+            }
+        }
         // Perform hit testing only when ARKit tracking is in a good state.
         if let camera = session.currentFrame?.camera, case .normal = camera.trackingState,
             let result = self.sceneView.smartHitTest(screenCenter) {
@@ -354,13 +353,18 @@ class ViewController: UIViewController {
         }
     }
     
-    
     @IBAction func donePressed(_ sender: UIBarButtonItem) {
-        var memoryPalace = MemoryPalace(name: "Lol", photo: nil, data: mapDataFromFile!)
+        print("pressed")
+        let memoryPalace = MemoryPalace(name: "Lol", photo: nil, data: mapDataFromFile!)
         if (memoryPalace != nil)
         {
-            //palaces.append(memoryPalace)
+            palaces.append(memoryPalace!)
+            print(palaces[0].name)
         }
+    }
+    
+    @IBAction func donePressedThing(_ sender: UIBarButtonItem) {
+        print("pressed")
     }
     
     

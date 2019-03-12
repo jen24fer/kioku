@@ -356,7 +356,7 @@
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="done" id="x6L-ii-p0m">
                             <connections>
-                                <action selector="donePressed:" destination="1ad-ba-Uj0" id="HKF-NX-1QW"/>
+                                <action selector="donePressedThing:" destination="1ad-ba-Uj0" id="Vuy-M5-X0O"/>
                                 <segue destination="kBt-Yg-NeO" kind="show" id="nk1-u0-ovu"/>
                             </connections>
                         </barButtonItem>
@@ -526,7 +526,6 @@
         <image name="settings" width="190" height="60"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="NpS-vW-GXG"/>
         <segue reference="05s-z6-x6E"/>
         <segue reference="nk1-u0-ovu"/>
     </inferredMetricsTieBreakers>
