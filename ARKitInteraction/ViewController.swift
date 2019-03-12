@@ -340,7 +340,7 @@ class ViewController: UIViewController {
         var memoryPalace = MemoryPalace(name: "Lol", photo: nil, data: mapDataFromFile!)
         if (memoryPalace != nil)
         {
-            palaces.append(memoryPalace)
+            //palaces.append(memoryPalace)
         }
     }
     
