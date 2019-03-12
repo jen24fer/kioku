@@ -24,11 +24,14 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var saveExperience: UIBarButtonItem!
     
+    @IBOutlet weak var OrientationArrow: UIImageView!
+    
+    /// A list storing the objects we must visit in order
+    var objectQueue: [VirtualObject] = []
+    
     var palaces = [MemoryPalace]()
     
     let selection = UISelectionFeedbackGenerator()
-    
-
     
     var focusSquare = FocusSquare()
     
@@ -149,7 +152,22 @@ class ViewController: UIViewController {
             focusSquare.unhide()
             statusViewController.scheduleMessage("TRY MOVING LEFT OR RIGHT", inSeconds: 5.0, messageType: .focusSquare)
         }
-        
+        if let currentPosition = session.currentFrame?.camera.transform {
+                                // print(position[3][0])
+            if objectQueue.count > 0 {
+                let objectPosition = objectQueue[0].transform
+                let deltaZ = objectPosition.m43 - currentPosition[3][2]
+                let deltaX = objectPosition.m41 - currentPosition[3][0]
+                                            let deltaTheta = atan2(deltaZ, deltaX)
+                                            var rotationAngle: Float = 0.0
+                                            if let currentPosition = session.currentFrame?.camera.eulerAngles {
+                                                        print(deltaTheta - currentPosition[1] + 1.5708)
+                                                        rotationAngle = (deltaTheta - currentPosition[1] + 1.5708)
+                                                }
+                                            
+                                            OrientationArrow.transform = CGAffineTransform.init(rotationAngle: CGFloat(-1.0 * rotationAngle))
+                                    }
+                        }
         // Perform hit testing only when ARKit tracking is in a good state.
         if let camera = session.currentFrame?.camera, case .normal = camera.trackingState,
             let result = self.sceneView.smartHitTest(screenCenter) {
@@ -166,6 +184,7 @@ class ViewController: UIViewController {
             }
             addObjectButton.isHidden = true
         }
+        
     }
     
     // MARK: - Error handling
