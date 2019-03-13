@@ -9,8 +9,10 @@ import ARKit
 import SceneKit
 import UIKit
 import AudioToolbox
+import AudioToolbox.AudioServices
+import Speech
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, SFSpeechRecognizerDelegate {
     
     // MARK: IBOutlets
     
@@ -24,12 +26,21 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var saveExperience: UIBarButtonItem!
     
-    @IBOutlet weak var OrientationArrow: UIImageView!
+    @IBOutlet weak var OrientationArrow: UIButton!
+    
     
     /// A list storing the objects we must visit in order
     var objectQueue: [VirtualObject] = []
     
+    /// Stores weather or not the current object is in view and locked
+    var isLocked: Bool = false;
+    
     var palaces = [MemoryPalace]()
+    
+    let audioEngine = AVAudioEngine()
+    let speechRecognizer: SFSpeechRecognizer? = SFSpeechRecognizer()
+    let request = SFSpeechAudioBufferRecognitionRequest()
+    var recognitionTask: SFSpeechRecognitionTask?
     
     let selection = UISelectionFeedbackGenerator()
     
@@ -165,6 +176,13 @@ class ViewController: UIViewController {
                     rotationAngle = (deltaTheta - currentPosition[1] + 1.5708)
                 }
                 OrientationArrow.transform = CGAffineTransform.init(rotationAngle: CGFloat(-1.0 * rotationAngle))
+                if abs(rotationAngle) <= 0.3 && !isLocked {
+                    isLocked = true;
+                    AudioServicesPlaySystemSound(SystemSoundID(1107))
+                }
+                if abs(rotationAngle) > 0.3 {
+                    isLocked = false;
+                }
             }
         }
         // Perform hit testing only when ARKit tracking is in a good state.
@@ -226,6 +244,41 @@ class ViewController: UIViewController {
 //    }
 //
     
+    func recordAndRecognizeSpeech() {
+        let node = audioEngine.inputNode
+        let recordingFormat = node.outputFormat(forBus: 0)
+        node.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { buffer, _ in
+            self.request.append(buffer)
+        }
+        audioEngine.prepare()
+        do {
+            try audioEngine.start()
+        } catch {
+            return print(error)
+        }
+        
+        guard let myRecognizer = SFSpeechRecognizer() else { return }
+        
+        if !myRecognizer.isAvailable { return }
+        
+        recognitionTask = speechRecognizer?.recognitionTask(with: request, resultHandler: { result, error in
+            if let result = result {
+                let bestString = result.bestTranscription.formattedString
+                if bestString.lowercased() == self.objectQueue[0].modelName.lowercased() {
+                    self.OrientationArrow.setImage(UIImage(named: "yellow-arrow"), for: .normal)
+                    self.objectQueue.append(self.objectQueue.remove(at: 0))
+                    AudioServicesPlaySystemSound(SystemSoundID(1521))
+                    return
+                } else {
+                    self.OrientationArrow.setImage(UIImage(named: "red-arrow"), for: .normal)
+                    AudioServicesPlaySystemSound(SystemSoundID(1520))
+                    return
+                }
+            } else if let error = error {
+                print(error)
+            }
+        })
+    }
 
     
     @IBAction func saveExperiencePressed(_ sender: UIBarButtonItem) {
@@ -367,5 +420,15 @@ class ViewController: UIViewController {
         print("pressed")
     }
     
+    @IBAction func OrientationArrowAction(_ sender: Any) {
+        if isLocked {
+            // Pop off the first item and move it to the back
+            // of the queue
+            // objectQueue.append(objectQueue.remove(at: 0))
+            self.OrientationArrow.setImage(UIImage(named: "blue-arrow"), for: .normal)
+            recordAndRecognizeSpeech()
+            //objectQueue[0].modelName
+        }
+    }
     
 }
