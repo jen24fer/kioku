@@ -20,7 +20,12 @@
 		39D8DC1B1E8ADAE600386B05 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 39D8DC1A1E8ADAE600386B05 /* LaunchScreen.storyboard */; };
 		AB4594152234A6EA002E39A2 /* LoadTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4594142234A6EA002E39A2 /* LoadTableViewController.swift */; };
 		AB459419223788A9002E39A2 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB459418223788A9002E39A2 /* MenuViewController.swift */; };
+		ABD249362238B5E60048BE7E /* Background Slides.m4v in Resources */ = {isa = PBXBuildFile; fileRef = ABD249352238B5E60048BE7E /* Background Slides.m4v */; };
+		ABD249382238B6350048BE7E /* Spring beach1.wav in Resources */ = {isa = PBXBuildFile; fileRef = ABD249372238B6350048BE7E /* Spring beach1.wav */; };
+		ABD2493A2238B8E40048BE7E /* music_gameplay.m4a in Resources */ = {isa = PBXBuildFile; fileRef = ABD249392238B8B40048BE7E /* music_gameplay.m4a */; };
 		ABE04D0C2238126D00E55DCD /* MemoryPalace.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABE04D0B2238126D00E55DCD /* MemoryPalace.swift */; };
+		ABE04D0E223847D900E55DCD /* SaveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABE04D0D223847D900E55DCD /* SaveViewController.swift */; };
+		ABE04D102238557300E55DCD /* MapTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABE04D0F2238557300E55DCD /* MapTableViewCell.swift */; };
 		C41366B91EB80DD400EC054A /* StatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41366B81EB80DD400EC054A /* StatusViewController.swift */; };
 		C42A71BD1E9C0AF200944367 /* FocusSquare.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42A71BC1E9C0AF200944367 /* FocusSquare.swift */; };
 		C46356671EF9CC500080C8D9 /* VirtualObjectARView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46356661EF9CC480080C8D9 /* VirtualObjectARView.swift */; };
@@ -48,7 +53,12 @@
 		39D8DC1A1E8ADAE600386B05 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AB4594142234A6EA002E39A2 /* LoadTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LoadTableViewController.swift; path = Resources/LoadTableViewController.swift; sourceTree = "<group>"; };
 		AB459418223788A9002E39A2 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
+		ABD249352238B5E60048BE7E /* Background Slides.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Background Slides.m4v"; path = "ARKitInteraction/Resources/Assets.xcassets/Background Slides.dataset/Background Slides.m4v"; sourceTree = "<group>"; };
+		ABD249372238B6350048BE7E /* Spring beach1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = "Spring beach1.wav"; path = "ARKitInteraction/Resources/Assets.xcassets/Spring beach1.dataset/Spring beach1.wav"; sourceTree = "<group>"; };
+		ABD249392238B8B40048BE7E /* music_gameplay.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = music_gameplay.m4a; sourceTree = "<group>"; };
 		ABE04D0B2238126D00E55DCD /* MemoryPalace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryPalace.swift; sourceTree = "<group>"; };
+		ABE04D0D223847D900E55DCD /* SaveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveViewController.swift; sourceTree = "<group>"; };
+		ABE04D0F2238557300E55DCD /* MapTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapTableViewCell.swift; sourceTree = "<group>"; };
 		C41366B81EB80DD400EC054A /* StatusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusViewController.swift; sourceTree = "<group>"; };
 		C42A71BC1E9C0AF200944367 /* FocusSquare.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FocusSquare.swift; sourceTree = "<group>"; };
 		C46356651EF9CB1A0080C8D9 /* VirtualObjectLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VirtualObjectLoader.swift; sourceTree = "<group>"; };
@@ -103,6 +113,7 @@
 			children = (
 				3929C49E1E89EE4400E00B60 /* Models.scnassets */,
 				3929C4921E89EC2C00E00B60 /* Assets.xcassets */,
+				ABD249392238B8B40048BE7E /* music_gameplay.m4a */,
 				3929C4971E89EC2C00E00B60 /* Info.plist */,
 				3929C48F1E89EC2C00E00B60 /* Main.storyboard */,
 				39D8DC1A1E8ADAE600386B05 /* LaunchScreen.storyboard */,
@@ -113,6 +124,8 @@
 		3929C47F1E89EC2C00E00B60 = {
 			isa = PBXGroup;
 			children = (
+				ABD249372238B6350048BE7E /* Spring beach1.wav */,
+				ABD249352238B5E60048BE7E /* Background Slides.m4v */,
 				11063F3B1EBE651B0033EE6D /* README.md */,
 				3929C48A1E89EC2C00E00B60 /* ARKitInteraction */,
 				3929C4891E89EC2C00E00B60 /* Products */,
@@ -133,12 +146,14 @@
 			isa = PBXGroup;
 			children = (
 				ABE04D0B2238126D00E55DCD /* MemoryPalace.swift */,
+				ABE04D0F2238557300E55DCD /* MapTableViewCell.swift */,
 				3929C48B1E89EC2C00E00B60 /* AppDelegate.swift */,
 				3929C48D1E89EC2C00E00B60 /* ViewController.swift */,
 				C8C12A701F29277B00B011FE /* ViewController+ARSCNViewDelegate.swift */,
 				1488323E1EFC378A0043E0AB /* ViewController+Actions.swift */,
 				147D76491EFC36070000FEBF /* ViewController+ObjectSelection.swift */,
 				C8C2AC511F3A545C00E86BA3 /* VirtualObjectInteraction.swift */,
+				ABE04D0D223847D900E55DCD /* SaveViewController.swift */,
 				C812D8671F47628300344E73 /* ThresholdPanGesture.swift */,
 				C46356661EF9CC480080C8D9 /* VirtualObjectARView.swift */,
 				AB4594142234A6EA002E39A2 /* LoadTableViewController.swift */,
@@ -212,6 +227,11 @@
 						DevelopmentTeam = L4YVK2KV49;
 						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -238,6 +258,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ABD2493A2238B8E40048BE7E /* music_gameplay.m4a in Resources */,
+				ABD249382238B6350048BE7E /* Spring beach1.wav in Resources */,
+				ABD249362238B5E60048BE7E /* Background Slides.m4v in Resources */,
 				3929C49F1E89EE4400E00B60 /* Models.scnassets in Resources */,
 				39D8DC1B1E8ADAE600386B05 /* LaunchScreen.storyboard in Resources */,
 				3929C4931E89EC2C00E00B60 /* Assets.xcassets in Resources */,
@@ -253,10 +276,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				C812D8681F47628300344E73 /* ThresholdPanGesture.swift in Sources */,
+				ABE04D0E223847D900E55DCD /* SaveViewController.swift in Sources */,
 				11BD822A1F09D750003F11C8 /* ViewController+ObjectSelection.swift in Sources */,
 				1488323F1EFC378A0043E0AB /* ViewController+Actions.swift in Sources */,
 				3929C48E1E89EC2C00E00B60 /* ViewController.swift in Sources */,
 				C41366B91EB80DD400EC054A /* StatusViewController.swift in Sources */,
+				ABE04D102238557300E55DCD /* MapTableViewCell.swift in Sources */,
 				39C0B95A1E9C6B1F003FCA0C /* Utilities.swift in Sources */,
 				147062641F06FA790003EE03 /* VirtualObjectSelection.swift in Sources */,
 				C8C12A711F29277B00B011FE /* ViewController+ARSCNViewDelegate.swift in Sources */,
