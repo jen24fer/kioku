@@ -188,6 +188,30 @@
                                     <segue destination="ri3-7p-e6d" kind="embed" id="uiU-1f-e8S"/>
                                 </connections>
                             </containerView>
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I7P-Jt-TpC" userLabel="Add Object Button">
+                                <rect key="frame" x="327" y="309" width="48" height="48"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="48" id="TTr-3V-POG"/>
+                                    <constraint firstAttribute="height" constant="48" id="hS4-un-m6Q"/>
+                                </constraints>
+                                <state key="normal" title="Save">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="savePressed2:" destination="BV1-FR-VrT" eventType="touchUpInside" id="u5e-nc-ihA"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xuS-OS-5dN" userLabel="Add Object Button">
+                                <rect key="frame" x="0.0" y="309" width="48" height="48"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="48" id="JR8-1L-sI3"/>
+                                    <constraint firstAttribute="height" constant="48" id="yQs-ai-Rbk"/>
+                                </constraints>
+                                <state key="normal" title="Load"/>
+                                <connections>
+                                    <action selector="loadPressed:" destination="BV1-FR-VrT" eventType="touchUpInside" id="ARA-Qv-EbM"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xcf-ic-uGo" userLabel="Add Object Button">
                                 <rect key="frame" x="163.5" y="604" width="48" height="48"/>
                                 <constraints>
@@ -210,8 +234,10 @@
                             <constraint firstItem="3cb-dQ-oXx" firstAttribute="width" secondItem="xcf-ic-uGo" secondAttribute="width" constant="-5" id="Fg7-D6-Eh5"/>
                             <constraint firstAttribute="trailing" secondItem="R5W-V8-6lY" secondAttribute="trailing" id="J42-1v-Ihf"/>
                             <constraint firstItem="3cb-dQ-oXx" firstAttribute="centerX" secondItem="xcf-ic-uGo" secondAttribute="centerX" id="KPf-Pf-2mp"/>
+                            <constraint firstItem="xuS-OS-5dN" firstAttribute="leading" secondItem="GBj-4O-Whc" secondAttribute="leading" id="Kxh-UJ-bz7"/>
                             <constraint firstItem="tnx-rc-95S" firstAttribute="top" secondItem="GBj-4O-Whc" secondAttribute="top" id="Sdx-fT-fqG"/>
                             <constraint firstItem="XqM-fq-u6L" firstAttribute="leading" secondItem="GBj-4O-Whc" secondAttribute="leading" constant="152" id="UBq-g6-brF"/>
+                            <constraint firstItem="GBj-4O-Whc" firstAttribute="trailing" secondItem="I7P-Jt-TpC" secondAttribute="trailing" id="WP9-fb-9TE"/>
                             <constraint firstItem="R5W-V8-6lY" firstAttribute="leading" secondItem="RLh-bf-1c3" secondAttribute="leading" id="Yj0-Fo-B5n"/>
                             <constraint firstItem="xcf-ic-uGo" firstAttribute="top" secondItem="XqM-fq-u6L" secondAttribute="bottom" constant="80" id="a73-k6-drE"/>
                             <constraint firstItem="xcf-ic-uGo" firstAttribute="leading" secondItem="GBj-4O-Whc" secondAttribute="leading" constant="163.5" id="ajJ-d9-mOg"/>
@@ -220,11 +246,13 @@
                             <constraint firstItem="tnx-rc-95S" firstAttribute="leading" secondItem="GBj-4O-Whc" secondAttribute="leading" id="cGf-LE-hzb"/>
                             <constraint firstItem="3cb-dQ-oXx" firstAttribute="centerY" secondItem="xcf-ic-uGo" secondAttribute="centerY" id="dtP-zr-OKq"/>
                             <constraint firstItem="R5W-V8-6lY" firstAttribute="top" secondItem="RLh-bf-1c3" secondAttribute="top" id="fDn-zw-Oo2"/>
+                            <constraint firstItem="I7P-Jt-TpC" firstAttribute="top" secondItem="tnx-rc-95S" secondAttribute="bottom" constant="300" id="gqC-9Q-ipN"/>
                             <constraint firstAttribute="bottom" secondItem="E6c-py-dvH" secondAttribute="bottom" id="kLb-BI-xJ4"/>
                             <constraint firstItem="GBj-4O-Whc" firstAttribute="trailing" secondItem="xcf-ic-uGo" secondAttribute="trailing" constant="163.5" id="kN8-Ve-Xqq"/>
                             <constraint firstItem="GBj-4O-Whc" firstAttribute="trailing" secondItem="XqM-fq-u6L" secondAttribute="trailing" constant="152" id="nBC-7M-6m7"/>
                             <constraint firstAttribute="bottom" secondItem="R5W-V8-6lY" secondAttribute="bottom" id="poH-DX-LIv"/>
                             <constraint firstItem="3cb-dQ-oXx" firstAttribute="height" secondItem="xcf-ic-uGo" secondAttribute="height" constant="-5" id="szW-aA-CXv"/>
+                            <constraint firstItem="xuS-OS-5dN" firstAttribute="top" secondItem="tnx-rc-95S" secondAttribute="bottom" constant="300" id="uvj-RK-tOG"/>
                             <constraint firstItem="GBj-4O-Whc" firstAttribute="bottom" secondItem="xcf-ic-uGo" secondAttribute="bottom" constant="15" id="w7D-gO-FfL"/>
                             <constraint firstItem="E6c-py-dvH" firstAttribute="leading" secondItem="GBj-4O-Whc" secondAttribute="leading" id="wEL-Op-yTe"/>
                             <constraint firstItem="xcf-ic-uGo" firstAttribute="top" secondItem="XqM-fq-u6L" secondAttribute="bottom" constant="20" id="yLu-qZ-KiD"/>
@@ -244,6 +272,8 @@
                         <outlet property="OrientationArrow" destination="XqM-fq-u6L" id="eJq-g6-srI"/>
                         <outlet property="addObjectButton" destination="xcf-ic-uGo" id="uFa-W2-4Iu"/>
                         <outlet property="blurView" destination="R5W-V8-6lY" id="oF2-lD-Srf"/>
+                        <outlet property="load" destination="xuS-OS-5dN" id="k1o-rh-6Rw"/>
+                        <outlet property="save" destination="I7P-Jt-TpC" id="NNh-j5-Qb6"/>
                         <outlet property="saveExperience" destination="OC8-4s-C5n" id="PHS-LY-9bF"/>
                         <outlet property="sceneView" destination="E6c-py-dvH" id="Gr4-Uw-Z4A"/>
                         <outlet property="spinner" destination="3cb-dQ-oXx" id="rnE-Xe-cDE"/>

@@ -27,6 +27,10 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var OrientationArrow: UIImageView!
     
+    @IBOutlet weak var save: UIButton!
+    
+    @IBOutlet weak var load: UIButton!
+    
     /// A list storing the objects we must visit in order
     var objectQueue: [VirtualObject] = []
     
@@ -74,9 +78,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
       
        
-        if mapDataFromFile != nil {
-           print("hahahaaaaaa nope")
-        }
+
         sceneView.delegate = self
         sceneView.session.delegate = self
 
@@ -95,6 +97,14 @@ class ViewController: UIViewController {
         // Set the delegate to ensure this gesture is only used when there are no virtual objects in the scene.
         tapGesture.delegate = self
         sceneView.addGestureRecognizer(tapGesture)
+        
+        if mapDataFromFile == nil {
+            print("hahahaaaaaa nope")
+        }
+        else
+        {
+            loadExp()
+        }
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -447,7 +457,7 @@ self.navigationController?.setNavigationBarHidden(false, animated: true)
 //        //virtualObjectAnchor = nil
 //    }
     
-    @IBAction func loadExp(_ sender: UIButton) {
+    func loadExp() {
         /// - Tag: ReadWorldMap
         if #available(iOS 12.0, *) {
             let worldMap: ARWorldMap = {
@@ -468,6 +478,7 @@ self.navigationController?.setNavigationBarHidden(false, animated: true)
             
             ViewController.isRelocalizingMap = true
 
+
         } else {
             // Fallback on earlier versions
             print("IOS NOT AVAILABLE")
@@ -475,4 +486,82 @@ self.navigationController?.setNavigationBarHidden(false, animated: true)
     }
 
 
+    
+    @IBAction func loadPressed(_ sender: UIButton) {
+        print("loading")
+        var mem : MemoryPalace?
+        guard let data = mapDataFromFile
+            else { fatalError("Map data should already be verified to exist before Load button is enabled.") }
+        do
+        {
+            if let loadedPalace = try NSKeyedUnarchiver.unarchiveObject(withFile: MemoryPalace.ArchiveURL.path)
+            {
+                mem = loadedPalace as? MemoryPalace
+            }
+  
+        }
+        
+        if #available(iOS 12.0, *) {
+            let worldMap: ARWorldMap = {
+                guard let data = mapDataFromFile
+                    else { fatalError("Map data should already be verified to exist before Load button is enabled.") }
+                do {
+                    guard let worldMap = try NSKeyedUnarchiver.unarchivedObject(ofClass: ARWorldMap.self, from: data)
+                        else { fatalError("No ARWorldMap in archive.") }
+                    return worldMap
+                } catch {
+                    fatalError("Can't unarchive ARWorldMap from file data: \(error)")
+                }
+            }()
+            let configuration = ViewController.defaultConfiguration // this app's standard world tracking settings
+            configuration.initialWorldMap = worldMap
+            sceneView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
+            
+            ViewController.isRelocalizingMap = true
+            for obj in mem!.objectQueue! {
+            sceneView.scene.rootNode.addChildNode(obj)
+                sceneView.addOrUpdateAnchor(for: obj)
+            }
+        }
+    }
+    
+    @available(iOS 12.0, *)
+    @IBAction func savePressed2(_ sender: UIButton) {
+        print("saving")
+        sceneView.session.getCurrentWorldMap { worldMap, error in
+            guard let map = worldMap
+                else {
+                    let alert = UIAlertController(title: "Saving Failed", message: "Can't get current world map: " + error!.localizedDescription, preferredStyle: UIAlertController.Style.alert)
+                    
+                    // add an action (button)
+                    alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+                    
+                    // show the alert
+                    self.present(alert, animated: true, completion: nil)
+                    return
+            }
+
+        do {
+            let data = try NSKeyedArchiver.archivedData(withRootObject: map, requiringSecureCoding: true)
+            try data.write(to: self.mapSaveURL, options: [.atomic])
+            DispatchQueue.main.async {
+                //self.loadExperienceButton.isHidden = false
+                //self.loadExperienceButton.isEnabled = true
+            }
+            let memoryPalace = MemoryPalace(name: "default", photo: nil, data: data, objectQueue: self.objectQueue)
+            let isSuccessfulSave = NSKeyedArchiver.archiveRootObject(memoryPalace!, toFile: MemoryPalace.ArchiveURL.path)
+            if isSuccessfulSave {
+                os_log("Palace successfully saved.", log: OSLog.default, type: .debug)
+            } else {
+                os_log("Failed to save palace...", log: OSLog.default, type: .error)
+            }
+            
+            print("saved!")
+        } catch {
+            fatalError("Can't save map: \(error.localizedDescription)")
+        }
+
+        }
+    }
+    
 }
