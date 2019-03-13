@@ -31,6 +31,7 @@ extension ViewController: VirtualObjectSelectionViewControllerDelegate {
             self.sceneView.scene.rootNode.addChildNode(virtualObject)
             self.sceneView.addOrUpdateAnchor(for: virtualObject)
             self.objectQueue.append(virtualObject)
+            self.saveExp() // try saving every time an object is added
         }
     }
     

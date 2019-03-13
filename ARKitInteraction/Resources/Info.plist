@@ -42,6 +42,10 @@
 	<string>Save photos of your ARExperience</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Save photos of your AR experience</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>audio</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

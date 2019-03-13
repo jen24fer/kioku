@@ -11,6 +11,7 @@ import UIKit
 import AudioToolbox
 import AudioToolbox.AudioServices
 import Speech
+import os.log
 
 class ViewController: UIViewController, SFSpeechRecognizerDelegate {
     
@@ -36,6 +37,8 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
     var isLocked: Bool = false;
     
     var palaces = [MemoryPalace]()
+
+    static var palace : MemoryPalace?
     
     let audioEngine = AVAudioEngine()
     let speechRecognizer: SFSpeechRecognizer? = SFSpeechRecognizer()
@@ -82,6 +85,8 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+      
+       
         if mapDataFromFile != nil {
            print("hahahaaaaaa nope")
         }
@@ -117,7 +122,7 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-
+self.navigationController?.setNavigationBarHidden(false, animated: true)
         session.pause()
     }
 
@@ -279,16 +284,27 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
             }
         })
     }
-
+//    @available(iOS 12.0, *)
+//    func writeWorldMap(_ worldMap: ARWorldMap, to url: URL) throws {
+//        let data = try NSKeyedArchiver.archivedData(withRootObject: worldMap, requiringSecureCoding: true)
+//        try data.write(to: url)
+//    }
+//
+//    @available(iOS 12.0, *)
+//    func loadWorldMap(from url: URL) throws -> ARWorldMap {
+//        let mapData = try Data(contentsOf: url)
+//        guard let worldMap = try NSKeyedUnarchiver.unarchivedObject(ofClass: ARWorldMap.self, from: mapData)
+//            else { throw ARError(.invalidWorldMap) }
+//        return worldMap
+//    }
     
-    @IBAction func saveExperiencePressed(_ sender: UIBarButtonItem) {
-        print("button was pressed")
-        
+    func saveExp()
+    {
         if #available(iOS 12.0, *) {
             sceneView.session.getCurrentWorldMap { worldMap, error in
                 guard let map = worldMap
                     else {
-                        let alert = UIAlertController(title: ":(", message: "Can't get current world map: " + error!.localizedDescription, preferredStyle: UIAlertController.Style.alert)
+                        let alert = UIAlertController(title: "Saving Failed", message: "Can't get current world map: " + error!.localizedDescription, preferredStyle: UIAlertController.Style.alert)
                         
                         // add an action (button)
                         alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
@@ -314,10 +330,114 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
                     fatalError("Can't save map: \(error.localizedDescription)")
                 }
             }
+            let memoryPalace = MemoryPalace(name: "Lol", photo: nil, data: mapDataFromFile!, objectQueue: objectQueue)
+            if (memoryPalace != nil)
+            {
+                ViewController.palace = memoryPalace!
+            }
+            //            performSegue(withIdentifier: "saveMap", sender: saveExperience)
+        } else {
+            // Fallback on earlier versions
+            print("Ios version too low")
+            return
+        }
+    }
+    
+    @IBAction func saveExperiencePressed(_ sender: UIBarButtonItem) {
+        AudioServicesPlaySystemSound(1519)
+        
+        if #available(iOS 12.0, *) {
+            sceneView.session.getCurrentWorldMap { worldMap, error in
+                guard let map = worldMap
+                    else {
+                        let alert = UIAlertController(title: "Saving Failed", message: "Can't get current world map: " + error!.localizedDescription, preferredStyle: UIAlertController.Style.alert)
+                        
+                        // add an action (button)
+                        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+                        
+                        // show the alert
+                        self.present(alert, animated: true, completion: nil)
+                        return
+                }
+                // Add a snapshot image indicating where the map was captured.
+                //                guard let snapshotAnchor = SnapshotAnchor(capturing: self.sceneView)
+                //                    else { fatalError("Can't take snapshot") }
+                //                map.anchors.append(snapshotAnchor)
+                
+                do {
+                    let data = try NSKeyedArchiver.archivedData(withRootObject: map, requiringSecureCoding: true)
+                    try data.write(to: self.mapSaveURL, options: [.atomic])
+                    DispatchQueue.main.async {
+                        //self.loadExperienceButton.isHidden = false
+                        //self.loadExperienceButton.isEnabled = true
+                    }
+                    print("saved!")
+                    print(self.mapSaveURL)
+                    //print(String(data))
+                    let memoryPalace = MemoryPalace(name: "Lol", photo: nil, data: self.mapDataFromFile!, objectQueue: self.objectQueue)
+                    LoadTableViewController.palaces += [memoryPalace!]
+                    print(LoadTableViewController.palaces.count)
+                } catch {
+                    fatalError("Can't save map: \(error.localizedDescription)")
+                }
+            }
+
+//            if (memoryPalace != nil)
+//            {
+//                palaces.append(memoryPalace!)
+//                print(palaces[0].name)
+//            }
+//            performSegue(withIdentifier: "saveMap", sender: saveExperience)
         } else {
             // Fallback on earlier versions
         }
     }
+//
+//
+//    @IBAction func saveExperiencePressedTWO(_ sender: UIBarButtonItem) {
+//        print("button was pressed")
+//
+//        if #available(iOS 12.0, *) {
+//            sceneView.session.getCurrentWorldMap { worldMap, error in
+//                guard let map = worldMap
+//                    else {
+//                        let alert = UIAlertController(title: ":(", message: "Can't get current world map: " + error!.localizedDescription, preferredStyle: UIAlertController.Style.alert)
+//
+//                        // add an action (button)
+//                        alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+//
+//                        // show the alert
+//                        self.present(alert, animated: true, completion: nil)
+//                        return
+//                }
+//                // Add a snapshot image indicating where the map was captured.
+//                //                guard let snapshotAnchor = SnapshotAnchor(capturing: self.sceneView)
+//                //                    else { fatalError("Can't take snapshot") }
+//                //                map.anchors.append(snapshotAnchor)
+//
+//                do {
+//                    let data = try NSKeyedArchiver.archivedData(withRootObject: map, requiringSecureCoding: true)
+//                    try data.write(to: self.mapSaveURL, options: [.atomic])
+//                    DispatchQueue.main.async {
+//                        //self.loadExperienceButton.isHidden = false
+//                        //self.loadExperienceButton.isEnabled = true
+//                    }
+//                    print("saved!")
+//                } catch {
+//                    fatalError("Can't save map: \(error.localizedDescription)")
+//                }
+//            }
+//            let memoryPalace = MemoryPalace(name: "Lol", photo: nil, data: mapDataFromFile!, objectQueue: objectQueue)
+//            if (memoryPalace != nil)
+//            {
+//                palaces.append(memoryPalace!)
+//                print(palaces[0].name)
+//            }
+//
+//        } else {
+//            // Fallback on earlier versions
+//        }
+//    }
     
     lazy var mapSaveURL: URL = {
         do {
@@ -351,35 +471,35 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
         return try? Data(contentsOf: mapSaveURL)
     }
     
-    @IBAction func loadExperience(_ button: UIButton) {
-        
-        /// - Tag: ReadWorldMap
-        if #available(iOS 12.0, *) {
-            let worldMap: ARWorldMap = {
-                guard let data = mapDataFromFile
-                    else { fatalError("Map data should already be verified to exist before Load button is enabled.") }
-                do {
-                    guard let worldMap = try NSKeyedUnarchiver.unarchivedObject(ofClass: ARWorldMap.self, from: data)
-                        else { fatalError("No ARWorldMap in archive.") }
-                    return worldMap
-                } catch {
-                    fatalError("Can't unarchive ARWorldMap from file data: \(error)")
-                }
-            }()
-            
-            let configuration = ViewController.defaultConfiguration // this app's standard world tracking settings
-            configuration.initialWorldMap = worldMap
-            sceneView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
-            
-            ViewController.isRelocalizingMap = true
-        } else {
-            // Fallback on earlier versions
-        }
-        
-        // Display the snapshot image stored in the world
-     
-        //virtualObjectAnchor = nil
-    }
+//    @IBAction func loadExperience(_ button: UIButton) {
+//
+//        /// - Tag: ReadWorldMap
+//        if #available(iOS 12.0, *) {
+//            let worldMap: ARWorldMap = {
+//                guard let data = mapDataFromFile
+//                    else { fatalError("Map data should already be verified to exist before Load button is enabled.") }
+//                do {
+//                    guard let worldMap = try NSKeyedUnarchiver.unarchivedObject(ofClass: ARWorldMap.self, from: data)
+//                        else { fatalError("No ARWorldMap in archive.") }
+//                    return worldMap
+//                } catch {
+//                    fatalError("Can't unarchive ARWorldMap from file data: \(error)")
+//                }
+//            }()
+//
+//            let configuration = ViewController.defaultConfiguration // this app's standard world tracking settings
+//            configuration.initialWorldMap = worldMap
+//            sceneView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
+//
+//            ViewController.isRelocalizingMap = true
+//        } else {
+//            // Fallback on earlier versions
+//        }
+//
+//        // Display the snapshot image stored in the world
+//
+//        //virtualObjectAnchor = nil
+//    }
     
     @IBAction func loadExp(_ sender: UIButton) {
         /// - Tag: ReadWorldMap
@@ -401,11 +521,12 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
             sceneView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
             
             ViewController.isRelocalizingMap = true
+
         } else {
             // Fallback on earlier versions
+            print("IOS NOT AVAILABLE")
         }
     }
-    
     @IBAction func donePressed(_ sender: UIBarButtonItem) {
         print("pressed")
         let memoryPalace = MemoryPalace(name: "Lol", photo: nil, data: mapDataFromFile!)
@@ -430,5 +551,4 @@ class ViewController: UIViewController, SFSpeechRecognizerDelegate {
             //objectQueue[0].modelName
         }
     }
-    
 }
