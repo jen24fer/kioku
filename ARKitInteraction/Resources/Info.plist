@@ -2,6 +2,14 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CFBundleSignature</key>
+	<string></string>
+	<key>NSHumanReadableCopyright</key>
+	<string></string>
+	<key>CFBundleGetInfoString</key>
+	<string></string>
+	<key>LSApplicationCategoryType</key>
+	<string></string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -24,6 +32,10 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>The camera is used for augmenting reality</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Your speech is detected and parsed to acknowledge you rememebered an item</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Your microphone is used to record speech when prompted to identify a memory item</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>The location is used for augmenting reality</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>

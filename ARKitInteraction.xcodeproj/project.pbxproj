@@ -18,6 +18,7 @@
 		3929C49F1E89EE4400E00B60 /* Models.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 3929C49E1E89EE4400E00B60 /* Models.scnassets */; };
 		39C0B95A1E9C6B1F003FCA0C /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C0B9581E9C6B1F003FCA0C /* Utilities.swift */; };
 		39D8DC1B1E8ADAE600386B05 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 39D8DC1A1E8ADAE600386B05 /* LaunchScreen.storyboard */; };
+		8238F5FF2238F26100A38B30 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8238F5FE2238F26100A38B30 /* Default-568h@2x.png */; };
 		AB4594152234A6EA002E39A2 /* LoadTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4594142234A6EA002E39A2 /* LoadTableViewController.swift */; };
 		AB459419223788A9002E39A2 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB459418223788A9002E39A2 /* MenuViewController.swift */; };
 		ABD249362238B5E60048BE7E /* Background Slides.m4v in Resources */ = {isa = PBXBuildFile; fileRef = ABD249352238B5E60048BE7E /* Background Slides.m4v */; };
@@ -51,6 +52,7 @@
 		3929C49E1E89EE4400E00B60 /* Models.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = Models.scnassets; sourceTree = "<group>"; };
 		39C0B9581E9C6B1F003FCA0C /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		39D8DC1A1E8ADAE600386B05 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		8238F5FE2238F26100A38B30 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		AB4594142234A6EA002E39A2 /* LoadTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LoadTableViewController.swift; path = Resources/LoadTableViewController.swift; sourceTree = "<group>"; };
 		AB459418223788A9002E39A2 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		ABD249352238B5E60048BE7E /* Background Slides.m4v */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Background Slides.m4v"; path = "ARKitInteraction/Resources/Assets.xcassets/Background Slides.dataset/Background Slides.m4v"; sourceTree = "<group>"; };
@@ -124,6 +126,7 @@
 		3929C47F1E89EC2C00E00B60 = {
 			isa = PBXGroup;
 			children = (
+				8238F5FE2238F26100A38B30 /* Default-568h@2x.png */,
 				ABD249372238B6350048BE7E /* Spring beach1.wav */,
 				ABD249352238B5E60048BE7E /* Background Slides.m4v */,
 				11063F3B1EBE651B0033EE6D /* README.md */,
@@ -263,6 +266,7 @@
 				ABD249362238B5E60048BE7E /* Background Slides.m4v in Resources */,
 				3929C49F1E89EE4400E00B60 /* Models.scnassets in Resources */,
 				39D8DC1B1E8ADAE600386B05 /* LaunchScreen.storyboard in Resources */,
+				8238F5FF2238F26100A38B30 /* Default-568h@2x.png in Resources */,
 				3929C4931E89EC2C00E00B60 /* Assets.xcassets in Resources */,
 				3929C4911E89EC2C00E00B60 /* Main.storyboard in Resources */,
 			);
